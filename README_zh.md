@@ -7,6 +7,7 @@
 
 English documentation is available in [README.md](README.md).  
 日本語のドキュメントは [README_jp.md](README_jp.md) にあります。
+详细中文使用指导见 [USAGE_zh.md](USAGE_zh.md)。
 
 ## 概览
 
