@@ -5,7 +5,9 @@
 
 [Discord](https://discord.gg/aMwCu9JyUR)
 
+中文文档见 [README_zh.md](README_zh.md)。  
 日本語のドキュメントは [README_jp.md](README_jp.md) にあります。
+Detailed Chinese usage guide: [USAGE_zh.md](USAGE_zh.md).
 中文命令目标说明见 [COMMAND_TARGET_CHS.md](COMMAND_TARGET_CHS.md)。
 
 ## Overview
