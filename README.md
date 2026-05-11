@@ -6,6 +6,7 @@
 [Discord](https://discord.gg/aMwCu9JyUR)
 
 日本語のドキュメントは [README_jp.md](README_jp.md) にあります。
+中文命令目标说明见 [COMMAND_TARGET_CHS.md](COMMAND_TARGET_CHS.md)。
 
 ## Overview
 
