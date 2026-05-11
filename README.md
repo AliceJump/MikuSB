@@ -5,6 +5,7 @@
 
 [Discord](https://discord.gg/aMwCu9JyUR)
 
+中文文档见 [README_zh.md](README_zh.md)。  
 日本語のドキュメントは [README_jp.md](README_jp.md) にあります。
 
 ## Overview

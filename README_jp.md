@@ -5,7 +5,8 @@
 
 [Discord](https://discord.gg/aMwCu9JyUR)
 
-English documentation is available in [README.md](README.md).
+English documentation is available in [README.md](README.md).  
+中文文档见 [README_zh.md](README_zh.md)。
 
 ## 概要
 
