@@ -116,7 +116,8 @@ public class LoaderManager : MikuSB
         if (AccountData.GetFirstAccount() != null)
             return;
 
-        _ = AccountData.CreateAccount(InitialAccountUsername, InitialAccountUid, "");
+        var startupPassword = Crypto.CreateSessionKey($"{InitialAccountUsername}-{DateTime.UtcNow.Ticks}");
+        _ = AccountData.CreateAccount(InitialAccountUsername, InitialAccountUid, startupPassword);
         Logger.Info("Initialized startup account for fresh database.");
     }
 
