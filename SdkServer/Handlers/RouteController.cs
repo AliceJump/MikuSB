@@ -13,7 +13,6 @@ namespace MikuSB.SdkServer.Handlers;
 public class RouteController : ControllerBase
 {
     public static ConfigContainer Config = ConfigManager.Config;
-    private const string ForcedLoginUsername = "MIKU";
 
     public static object BuildServerList(string version = "")
     {
@@ -160,8 +159,8 @@ public class RouteController : ControllerBase
         return ResolveAccountByUid(uid);
     }
 
-    private static AccountData ResolveForcedAccount()
-        => AccountData.GetOrCreateAccountByUserName(ForcedLoginUsername, 0, "");
+    private static AccountData? ResolveAutoLoginAccount()
+        => AccountData.GetFirstAccount();
 
     private async Task<string?> GetJsonBodyValue(string propertyName)
     {
@@ -227,7 +226,9 @@ public class RouteController : ControllerBase
         [FromForm] string? form_token
     )
     {
-        var account = ResolveForcedAccount();
+        var account = ResolveAutoLoginAccount();
+        if (account == null)
+            return BuildLoginFailedResponse("Account not found.");
 
         var responseUid = account.Uid.ToString();
         var responseToken = account.GenerateComboToken();
@@ -267,7 +268,9 @@ public class RouteController : ControllerBase
         [FromForm] string? form_email
     )
     {
-        var account = ResolveForcedAccount();
+        var account = ResolveAutoLoginAccount();
+        if (account == null)
+            return BuildLoginFailedResponse("Account not found.");
 
         var responseUid = account.Uid.ToString();
         var responseToken = account.GenerateComboToken();
