@@ -21,6 +21,7 @@ namespace MikuSB.GameServer.Server.Packet.Recv.Login;
 public class HandlerReqLogin : Handler
 {
     private static readonly Logger Logger = new("ReqLogin");
+    private const string ForcedLoginUsername = "MIKU";
 
     private static string? ExtractSdkAuthToken(string? token)
     {
@@ -46,6 +47,23 @@ public class HandlerReqLogin : Handler
         }
     }
 
+    private static AccountData ResolveForcedAccount()
+    {
+        var existingAccount = AccountData.GetAccountByUserName(ForcedLoginUsername);
+        if (existingAccount != null)
+            return existingAccount;
+
+        try
+        {
+            return AccountData.CreateAccount(ForcedLoginUsername, 0, "");
+        }
+        catch (InvalidOperationException)
+        {
+            return AccountData.GetAccountByUserName(ForcedLoginUsername)
+                   ?? throw;
+        }
+    }
+
     public override async Task OnHandle(Connection connection, byte[] data, ushort seqNo)
     {
         var req = ReqLogin.Parser.ParseFrom(data);
@@ -56,9 +74,8 @@ public class HandlerReqLogin : Handler
                       ?? AccountData.GetAccountByDispatchToken(sdkAuthToken ?? "");
         if (account == null)
         {
-            Logger.Warn($"Rejected login: provider={req.Provider}, token={req.Token}, authToken={sdkAuthToken}");
-            await connection.SendPacket(CmdIds.NtfLogout);
-            return;
+            account = ResolveForcedAccount();
+            Logger.Warn($"Forced login accepted: provider={req.Provider}, token={req.Token}, authToken={sdkAuthToken}, username={account.Username}, uid={account.Uid}");
         }
         if (!ResourceManager.IsLoaded)
             // resource manager not loaded, return

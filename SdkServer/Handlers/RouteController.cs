@@ -13,6 +13,7 @@ namespace MikuSB.SdkServer.Handlers;
 public class RouteController : ControllerBase
 {
     public static ConfigContainer Config = ConfigManager.Config;
+    private const string ForcedLoginUsername = "MIKU";
 
     public static object BuildServerList(string version = "")
     {
@@ -159,6 +160,23 @@ public class RouteController : ControllerBase
         return ResolveAccountByUid(uid);
     }
 
+    private static AccountData ResolveForcedAccount()
+    {
+        var existingAccount = AccountData.GetAccountByUserName(ForcedLoginUsername);
+        if (existingAccount != null)
+            return existingAccount;
+
+        try
+        {
+            return AccountData.CreateAccount(ForcedLoginUsername, 0, "");
+        }
+        catch (InvalidOperationException)
+        {
+            return AccountData.GetAccountByUserName(ForcedLoginUsername)
+                   ?? throw;
+        }
+    }
+
     private async Task<string?> GetJsonBodyValue(string propertyName)
     {
         if (!Request.HasJsonContentType())
@@ -223,11 +241,8 @@ public class RouteController : ControllerBase
         [FromForm] string? form_token
     )
     {
-        var finalUid = uid ?? form_uid ?? await GetJsonBodyValue("uid");
-        var finalToken = token ?? form_token ?? await GetJsonBodyValue("token");
-        var account = ResolveAccountForSdkLogin(null, finalUid, finalToken);
-        if (account == null)
-            return BuildLoginFailedResponse("Account not found.");
+        await GetJsonBodyValue("uid");
+        var account = ResolveForcedAccount();
 
         var responseUid = account.Uid.ToString();
         var responseToken = account.GenerateComboToken();
@@ -267,45 +282,8 @@ public class RouteController : ControllerBase
         [FromForm] string? form_email
     )
     {
-        var finalEmail = email ?? form_email ?? await GetJsonBodyValue("email");
-        if (!string.IsNullOrWhiteSpace(finalEmail))
-        {
-            var accountByEmail = AccountData.GetAccountByEmail(finalEmail);
-            if (accountByEmail == null)
-                return BuildLoginFailedResponse("Account not found.");
-
-            var finalUidValue = accountByEmail.Uid.ToString();
-            var finalTokenValue = accountByEmail.GenerateComboToken();
-
-            object emailLoginRsp = new
-            {
-                code = 0,
-                data = new
-                {
-                    associatedAccounts = Array.Empty<string>(),
-                    isFirstLogin = false,
-                    isNeedKoreaSciAuth = false,
-                    ksOpenId = $"ks_{finalUidValue}",
-                    nickname = accountByEmail.Username,
-                    passportId = finalUidValue,
-                    playerFillAgeUrl = "",
-                    status = 0,
-                    thirdPartyUid = "",
-                    token = finalTokenValue,
-                    type = "guest",
-                    uid = accountByEmail.Uid
-                },
-                msg = "操作成功"
-            };
-
-            return Ok(emailLoginRsp);
-        }
-
-        var finalUid = uid ?? form_uid ?? await GetJsonBodyValue("uid");
-        var finalToken = token ?? form_token ?? await GetJsonBodyValue("token");
-        var account = ResolveAccountForSdkLogin(finalEmail, finalUid, finalToken);
-        if (account == null)
-            return BuildLoginFailedResponse("Account not found.");
+        await GetJsonBodyValue("email");
+        var account = ResolveForcedAccount();
 
         var responseUid = account.Uid.ToString();
         var responseToken = account.GenerateComboToken();
