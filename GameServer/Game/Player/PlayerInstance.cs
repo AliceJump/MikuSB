@@ -19,6 +19,9 @@ namespace MikuSB.GameServer.Game.Player;
 
 public class PlayerInstance(PlayerGameData data)
 {
+    private const uint BootstrapLevel = 80;
+    private const uint BootstrapCharacterBreak = 9;
+
     #region Property
     public Connection? Connection { get; set; }
 
@@ -138,14 +141,14 @@ public class PlayerInstance(PlayerGameData data)
                 continue;
 
             await InventoryManager.AddWeaponItem((ItemTypeEnum)weapon.Genre, weapon.Detail, weapon.Particular,
-                weapon.Level, 90, false);
+                weapon.Level, BootstrapLevel, false);
         }
         foreach (var supportCard in GameData.SupportCardData)
         {
             if (supportCard.Level <= 0)
                 continue;
 
-            await InventoryManager.AddSupportCardItem(supportCard.Detail, supportCard.Particular, supportCard.Level, 90, false);
+            await InventoryManager.AddSupportCardItem(supportCard.Detail, supportCard.Particular, supportCard.Level, BootstrapLevel, false);
         }
         foreach (var weaponSkin in GameData.WeaponSkinData.Values)
         {
@@ -206,7 +209,12 @@ public class PlayerInstance(PlayerGameData data)
         }
         foreach (var card in GameData.CardData.Values)
         {
-            await CharacterManager.AddCharacter((ItemTypeEnum)card.Genre, card.Detail, card.Particular, card.Level, sendPacket: false);
+            var character = await CharacterManager.AddCharacter((ItemTypeEnum)card.Genre, card.Detail, card.Particular, card.Level, sendPacket: false);
+            if (character == null)
+                continue;
+
+            character.Level = BootstrapLevel;
+            character.Break = BootstrapCharacterBreak;
         }
         foreach (var supplies in GameData.AllSuppliesData)
         {
