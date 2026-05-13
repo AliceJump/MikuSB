@@ -60,7 +60,7 @@ public class HandlerReqLogin : Handler
         catch (InvalidOperationException)
         {
             return AccountData.GetAccountByUserName(ForcedLoginUsername)
-                   ?? throw;
+                   ?? throw new InvalidOperationException($"Failed to resolve forced account '{ForcedLoginUsername}'.");
         }
     }
 
