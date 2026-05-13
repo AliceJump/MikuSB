@@ -167,6 +167,7 @@ public static class UpdateService
         return RequiredResourceFiles.All(fileName => File.Exists(Path.Combine(resourcePath, fileName)));
     }
 
+
     private static async Task DownloadAndInstallResourcesAsync()
     {
         using var client = CreateHttpClient();
