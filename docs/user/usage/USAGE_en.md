@@ -1,6 +1,6 @@
 # MikuSB Usage Guide (From Zero)
 
-Languages: English | [中文](USAGE_zh.md)
+Languages: English | [中文](USAGE_zh.md) | [日本語](USAGE_jp.md)
 
 > This document focuses on: full command flow, database fields and their sources, and how data is generated.
 

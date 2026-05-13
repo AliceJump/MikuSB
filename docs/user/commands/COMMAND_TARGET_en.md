@@ -1,6 +1,6 @@
 # Command targets and `giveall` parameters (EN)
 
-Languages: English | [中文](COMMAND_TARGET_zh.md)
+Languages: English | [中文](COMMAND_TARGET_zh.md) | [日本語](COMMAND_TARGET_jp.md)
 
 This document explains why running `giveall` in the console can show “player not found”, and what ID you should provide.
 

@@ -1,6 +1,6 @@
 # MikuSB 命令使用指南（从零开始）
 
-Languages: [English](COMMAND_GUIDE_en.md) | 中文
+Languages: [English](COMMAND_GUIDE_en.md) | 中文 | [日本語](COMMAND_GUIDE_jp.md)
 
 > 这份文档专门讲「怎么用命令」，尤其是 `giveall`。
 

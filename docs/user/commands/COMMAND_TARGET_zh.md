@@ -1,6 +1,6 @@
 # 命令目标与 `giveall` 参数说明（中文）
 
-Languages: [English](COMMAND_TARGET_en.md) | 中文
+Languages: [English](COMMAND_TARGET_en.md) | 中文 | [日本語](COMMAND_TARGET_jp.md)
 
 本文档说明为什么在控制台执行 `giveall` 时会出现“未找到玩家”，以及“ID 应该填什么”。
 

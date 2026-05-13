@@ -1,6 +1,6 @@
 # MikuSB 使用指导（从零开始）
 
-Languages: [English](USAGE_en.md) | 中文
+Languages: [English](USAGE_en.md) | 中文 | [日本語](USAGE_jp.md)
 
 > 本文档聚焦：完整命令流程、数据库字段含义与来源、数据如何生成。
 

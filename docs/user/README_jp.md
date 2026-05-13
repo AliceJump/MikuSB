@@ -9,10 +9,10 @@ Languages: [English](../../README.md) | [中文](README_zh.md) | 日本語
 
 ## ドキュメント
 
-- [Linux ガイド](platform/README_linux_en.md)
-- [使用ガイド](usage/USAGE_en.md)
-- [コマンドガイド](commands/COMMAND_GUIDE_en.md)
-- [コマンド対象説明](commands/COMMAND_TARGET_en.md)
+- [Linux ガイド](platform/README_linux_jp.md)
+- [使用ガイド](usage/USAGE_jp.md)
+- [コマンドガイド](commands/COMMAND_GUIDE_jp.md)
+- [コマンド対象説明](commands/COMMAND_TARGET_jp.md)
 
 ## 概要
 
@@ -60,7 +60,7 @@ dotnet run --project .\MikuSB
 5. サーバーコンソールで `game` コマンドを実行します。
 6. ゲームを起動してログインします。
 
-公開コマンドと生成データの詳細は[使用ガイド](usage/USAGE_en.md)を参照してください。
+公開コマンドと生成データの詳細は[使用ガイド](usage/USAGE_jp.md)を参照してください。
 
 ## 機能一覧
 

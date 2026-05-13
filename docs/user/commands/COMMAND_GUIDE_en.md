@@ -1,6 +1,6 @@
 # MikuSB Command Guide (From Zero)
 
-Languages: English | [中文](COMMAND_GUIDE_zh.md)
+Languages: English | [中文](COMMAND_GUIDE_zh.md) | [日本語](COMMAND_GUIDE_jp.md)
 
 > This guide explains how to use commands, especially `giveall`.
 

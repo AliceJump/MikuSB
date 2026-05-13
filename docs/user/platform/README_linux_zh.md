@@ -1,6 +1,6 @@
 # MikuSB 在 Linux 上使用
 
-Languages: [English](README_linux_en.md) | 中文
+Languages: [English](README_linux_en.md) | 中文 | [日本語](README_linux_jp.md)
 
 ## 配置
 
