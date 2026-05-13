@@ -220,7 +220,7 @@ public class PlayerInstance(PlayerGameData data)
                 .Take(3)
                 .Select(x => x.Guid)
                 .ToList();
-            if (selected.Count >= 3)
+            if (selected.Count == 3)
                 await LineupManager.UpdateLineup(1, selected[0], selected[1], selected[2], false);
         }
     }
