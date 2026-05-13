@@ -38,5 +38,21 @@
     "DebugMessage": true,
     "DebugDetailMessage": true,
     "DebugNoHandlerPacket": true
+  },
+  "Proxy": {
+    "Enabled": true,
+    "Port": 18888
+  },
+  "Loader": {
+    "GamePath": "",
+    "PatchPaths": [
+      "Patch\\MikuSB-Patch.dll"
+    ],
+    "Arguments": [
+      "-FeatureLevelES31",
+      "-channelid=seasun",
+      "-NoSplash"
+    ],
+    "SetAllProxy": true
   }
 }

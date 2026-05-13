@@ -128,9 +128,11 @@ public class CommandTextCHS
 {
     public NoticeTextCHS Notice { get; } = new();
     public HelpTextCHS Help { get; } = new();
+    public AccountTextCHS Account { get; } = new();
     public GirlTextCHS Girl { get; } = new();
     public GiveAllTextCHS GiveAll { get; } = new();
     public DebugTextCHS Debug { get; } = new();
+    public GameCommandTextCHS Game { get; } = new();
 }
 
 #endregion
@@ -217,6 +219,14 @@ public class HelpTextCHS
     public string CommandAlias => "命令别名: ";
 }
 
+public class AccountTextCHS
+{
+    public string Desc => "管理 SDK 登录使用的账号映射";
+    public string Usage => "用法: /account create <邮箱> <UID>";
+    public string Created => "已创建账号映射: {0} -> UID {1}";
+    public string CreateFailed => "创建账号映射失败: {0}";
+}
+
 /// <summary>
 ///     path: Game.Command.Girl
 /// </summary>
@@ -270,6 +280,14 @@ public class DebugTextCHS
     public string DetailEnabled => "已启用详细调试包输出。";
     public string FileEnabled => "个人调试文件输出已启用。";
     public string FileDisabled => "个人调试文件输出已禁用。";
+}
+
+public class GameCommandTextCHS
+{
+    public string Desc => "使用补丁注入启动已配置的游戏";
+    public string Usage => "用法: /game [额外游戏参数]";
+    public string Started => "游戏已启动。PID: {0}";
+    public string Failed => "游戏启动失败: {0}";
 }
 
 #endregion

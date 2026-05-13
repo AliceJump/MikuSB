@@ -87,9 +87,11 @@ public class CommandTextEN
 {
     public NoticeTextEN Notice { get; } = new();
     public HelpTextEN Help { get; } = new();
+    public AccountTextEN Account { get; } = new();
     public GirlTextEN Girl { get; } = new();
     public GiveAllTextEN GiveAll { get; } = new();
     public DebugTextEN Debug { get; } = new();
+    public GameCommandTextEN Game { get; } = new();
 }
 
 #endregion
@@ -183,6 +185,14 @@ public class HelpTextEN
     public string CommandAlias => "Command Alias：";
 }
 
+public class AccountTextEN
+{
+    public string Desc => "Manage account mappings for SDK logins";
+    public string Usage => "Usage: /account create <email> <uid>";
+    public string Created => "Created account mapping: {0} -> UID {1}";
+    public string CreateFailed => "Failed to create account mapping: {0}";
+}
+
 /// <summary>
 ///     path: Game.Command.Girl
 /// </summary>
@@ -236,6 +246,14 @@ public class DebugTextEN
     public string DetailEnabled => "Detailed debug packet output enabled.";
     public string FileEnabled => "Personal debug file output enabled.";
     public string FileDisabled => "Personal debug file output disabled.";
+}
+
+public class GameCommandTextEN
+{
+    public string Desc => "Launch the configured game with patch injection";
+    public string Usage => "Usage: /game [extra game args]";
+    public string Started => "Game launched. PID: {0}";
+    public string Failed => "Failed to launch game: {0}";
 }
 
 #endregion

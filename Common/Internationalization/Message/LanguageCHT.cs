@@ -128,9 +128,11 @@ public class CommandTextCHT
 {
     public NoticeTextCHT Notice { get; } = new();
     public HelpTextCHT Help { get; } = new();
+    public AccountTextCHT Account { get; } = new();
     public GirlTextCHT Girl { get; } = new();
     public GiveAllTextCHT GiveAll { get; } = new();
     public DebugTextCHT Debug { get; } = new();
+    public GameCommandTextCHT Game { get; } = new();
 }
 
 #endregion
@@ -217,6 +219,14 @@ public class HelpTextCHT
     public string CommandAlias => "命令別名: ";
 }
 
+public class AccountTextCHT
+{
+    public string Desc => "管理 SDK 登入使用的帳號映射";
+    public string Usage => "用法: /account create <郵箱> <UID>";
+    public string Created => "已建立帳號映射: {0} -> UID {1}";
+    public string CreateFailed => "建立帳號映射失敗: {0}";
+}
+
 /// <summary>
 ///     path: Game.Command.Girl
 /// </summary>
@@ -270,6 +280,14 @@ public class DebugTextCHT
     public string DetailEnabled => "已啟用詳細調試封包輸出。";
     public string FileEnabled => "個人調試檔案輸出已啟用。";
     public string FileDisabled => "個人調試檔案輸出已停用。";
+}
+
+public class GameCommandTextCHT
+{
+    public string Desc => "使用補丁注入啟動已配置的遊戲";
+    public string Usage => "用法: /game [額外遊戲參數]";
+    public string Started => "遊戲已啟動。PID: {0}";
+    public string Failed => "遊戲啟動失敗: {0}";
 }
 
 #endregion
