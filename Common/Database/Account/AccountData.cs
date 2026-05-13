@@ -9,8 +9,6 @@ namespace MikuSB.Database.Account;
 [SugarTable("Account")]
 public class AccountData : BaseDatabaseDataHelper
 {
-    private static readonly object AccountCreateLock = new();
-
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
     public BanTypeEnum BanType { get; set; }
@@ -102,25 +100,6 @@ public class AccountData : BaseDatabaseDataHelper
 
         DatabaseHelper.CreateInstance(account);
         return account;
-    }
-
-    public static AccountData GetOrCreateAccountByUserName(string username, int uid = 0, string password = "")
-    {
-        if (string.IsNullOrWhiteSpace(username))
-            throw new ArgumentException("Username cannot be empty.", nameof(username));
-
-        var existingAccount = GetAccountByUserName(username);
-        if (existingAccount != null)
-            return existingAccount;
-
-        lock (AccountCreateLock)
-        {
-            existingAccount = GetAccountByUserName(username);
-            if (existingAccount != null)
-                return existingAccount;
-
-            return CreateAccount(username, uid, password);
-        }
     }
 
     public static void DeleteAccount(int uid)
