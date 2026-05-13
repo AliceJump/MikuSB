@@ -58,9 +58,61 @@ public class PlayerInstance(PlayerGameData data)
                 await InventoryManager.AddWeaponItem((ItemTypeEnum)weapon.Genre, weapon.Detail, weapon.Particular,
                     weapon.Level, 90, false);
             }
+            foreach (var supportCard in GameData.SupportCardData)
+            {
+                if (supportCard.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddSupportCardItem(supportCard.Detail, supportCard.Particular, supportCard.Level, 90, false);
+            }
+            foreach (var weaponSkin in GameData.WeaponSkinData.Values)
+            {
+                if (weaponSkin.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddWeaponSkinItem((ItemTypeEnum)weaponSkin.Genre, weaponSkin.Detail, weaponSkin.Particular, weaponSkin.Level, false);
+            }
             foreach (var skinCard in GameData.CardSkinData.Values)
             {
+                if (skinCard.Level <= 0)
+                    continue;
+
                 await InventoryManager.AddSkinItem((ItemTypeEnum)skinCard.Genre, skinCard.Detail, skinCard.Particular, skinCard.Level, false);
+            }
+            foreach (var profile in GameData.ProfileData.Values)
+            {
+                if (profile.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddProfileItem((ItemTypeEnum)profile.Genre, profile.Detail, profile.Particular, profile.Level, false);
+            }
+            foreach (var skinPart in GameData.CardSkinPartsData.Values)
+            {
+                if (skinPart.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddSkinPartItem((ItemTypeEnum)skinPart.Genre, skinPart.Detail, skinPart.Particular, skinPart.Level, false);
+            }
+            foreach (var callItem in GameData.CallItemData.Values)
+            {
+                if (callItem.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddCallItem((ItemTypeEnum)callItem.Genre, callItem.Detail, callItem.Particular, callItem.Level, false);
+            }
+            foreach (var weaponPart in GameData.WeaponPartsData.Values)
+            {
+                if (weaponPart.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddWeaponPartItem((ItemTypeEnum)weaponPart.Genre, weaponPart.Detail, weaponPart.Particular, weaponPart.Level, false);
+            }
+            foreach (var furniture in GameData.DormGiftData.Values)
+            {
+                if (furniture.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddHouseFurnitureItem((ItemTypeEnum)furniture.Genre, furniture.Detail, furniture.Particular, furniture.Level, false);
             }
             foreach (var ar in GameData.ArItemData.Values)
             {
