@@ -1,5 +1,7 @@
 # MikuSB 使用指导（从零开始）
 
+Languages: [English](USAGE_en.md) | 中文
+
 > 本文档聚焦：完整命令流程、数据库字段含义与来源、数据如何生成。
 
 ## 1. 从零开始运行（开发模式）
@@ -42,22 +44,15 @@ dotnet run --project ./MikuSB
 - `proxy-certs/*`（代理根证书与派生证书）
 - `Config/Handbook/*`（命令手册文本，按 TextMap 生成）
 
-## 2. 常用运行/发布命令
+## 2. 发布命令
 
-### 2.1 Linux 开发运行
-
-```bash
-dotnet build
-dotnet run --project ./MikuSB
-```
-
-### 2.2 Linux 发布单文件
+### 2.1 Linux 发布单文件
 
 ```bash
 dotnet publish ./MikuSB/MikuSB.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true --property:PublishDir=../publish
 ```
 
-### 2.3 Windows 发布（多文件，和 CI 一致）
+### 2.2 Windows 发布（多文件，和 CI 一致）
 
 ```powershell
 dotnet publish .\MikuSB\MikuSB.csproj -c Release -p:PublishProfile=MikuSB-Win64-MultiFile -o .\artifacts\publish\MikuSB

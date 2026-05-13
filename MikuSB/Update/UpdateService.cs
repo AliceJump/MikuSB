@@ -11,7 +11,7 @@ namespace MikuSB.MikuSB.Update;
 public static class UpdateService
 {
     private static readonly Logger Logger = new("Updater");
-    private static readonly bool UpdateEnabled = false;
+    private static readonly bool UpdateEnabled = true;
     private static readonly bool AskBeforeUpdate = true;
     private static readonly string RepositoryOwner = "MikuLeaks";
     private static readonly string RepositoryName = "MikuSB";
@@ -132,19 +132,11 @@ public static class UpdateService
 
     public static async Task EnsureResourcesPresentAsync()
     {
-#if DEBUG
-        if (ShouldSkipResourceCheck())
-            return;
-#endif
         if (!AreRequiredResourcesPresent())
         {
             Logger.Warn("Required resources are missing. Downloading resource package.");
             await DownloadAndInstallResourcesAsync();
         }
-
-#if DEBUG
-        MarkResourcesReady();
-#endif
     }
 
     private static string StageUpdaterExecutable()
@@ -175,48 +167,6 @@ public static class UpdateService
         return RequiredResourceFiles.All(fileName => File.Exists(Path.Combine(resourcePath, fileName)));
     }
 
-#if DEBUG
-    private static bool ShouldSkipResourceCheck()
-    {
-        var markerPath = GetResourceReadyMarkerPath();
-        if (File.Exists(markerPath))
-        {
-            if (AreRequiredResourcesPresent())
-            {
-                Logger.Debug("Debug resource check skipped because resources are ready.");
-                return true;
-            }
-
-            try
-            {
-                File.Delete(markerPath);
-            }
-            catch
-            {
-            }
-        }
-
-        return false;
-    }
-
-    private static void MarkResourcesReady()
-    {
-        var markerPath = GetResourceReadyMarkerPath();
-        try
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(markerPath)!);
-            File.WriteAllText(markerPath, BuildVersion.Current);
-        }
-        catch
-        {
-        }
-    }
-
-    private static string GetResourceReadyMarkerPath()
-    {
-        return Path.Combine(AppContext.BaseDirectory, ConfigManager.Config.Path.ResourcePath, ".resource_ready");
-    }
-#endif
 
     private static async Task DownloadAndInstallResourcesAsync()
     {

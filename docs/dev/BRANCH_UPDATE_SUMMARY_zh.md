@@ -1,23 +1,23 @@
 # 本分支基于主线（origin/main）更新总结
 
-> 分支：`copilot/analyze-login-rejection`  
-> 对比基线：`origin/main`  
+> 分支：`copilot/analyze-login-rejection`
+> 对比基线：`origin/main`
 > 统计：13 个提交，5 个文件变更（+163 / -141）
 
 ## 一、提交列表（按时间从旧到新）
 
-1. `038e236` feat: force login to MIKU account  
-2. `8ea8b75` fix: handle forced account fallback exceptions  
-3. `13c7ed8` refactor: share forced account resolution for login  
-4. `89c8e81` feat: auto login first account from database  
-5. `1d217f0` refactor: select first account for auto-login fallback  
-6. `60b091d` feat: initialize default account at startup for new database  
-7. `f502007` fix: avoid logging startup account identifiers  
-8. `fbb31c8` fix: use random password for startup-initialized account  
-9. `2ca4f0a` feat: auto grant level 90 weapons on new player initialization  
-10. `61a231f` feat: initialize all giveall items for new players  
-11. `80fbf48` fix: backfill full player initialization on empty login data  
-12. `25c76c2` fix: require exactly three characters before default lineup init  
+1. `038e236` feat: force login to MIKU account
+2. `8ea8b75` fix: handle forced account fallback exceptions
+3. `13c7ed8` refactor: share forced account resolution for login
+4. `89c8e81` feat: auto login first account from database
+5. `1d217f0` refactor: select first account for auto-login fallback
+6. `60b091d` feat: initialize default account at startup for new database
+7. `f502007` fix: avoid logging startup account identifiers
+8. `fbb31c8` fix: use random password for startup-initialized account
+9. `2ca4f0a` feat: auto grant level 90 weapons on new player initialization
+10. `61a231f` feat: initialize all giveall items for new players
+11. `80fbf48` fix: backfill full player initialization on empty login data
+12. `25c76c2` fix: require exactly three characters before default lineup init
 13. `8582e3c` fix: set bootstrap equipment and character progression to level 80
 
 ## 二、文件级更新概览
@@ -60,10 +60,10 @@
 
 ## 三、本分支相对主线的核心变化主题
 
-1. **登录容错增强**：token 无法匹配时可回退首账号，减少首次接入/异常数据导致的登录拒绝。  
-2. **新库可开箱运行**：首次启动自动生成默认账号，降低初始化门槛。  
-3. **玩家数据自愈能力提升**：对空档案进行登录时全量回填，避免关键数据缺失。  
-4. **初始化规则统一化**：引导等级配置集中化，行为更稳定可控。  
+1. **登录容错增强**：token 无法匹配时可回退首账号，减少首次接入/异常数据导致的登录拒绝。
+2. **新库可开箱运行**：首次启动自动生成默认账号，降低初始化门槛。
+3. **玩家数据自愈能力提升**：对空档案进行登录时全量回填，避免关键数据缺失。
+4. **初始化规则统一化**：引导等级配置集中化，行为更稳定可控。
 
 ## 四、变更文件清单
 

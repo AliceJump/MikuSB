@@ -1,15 +1,12 @@
 # MikuSB 命令使用指南（从零开始）
 
-> 这份文档专门讲「怎么用命令」，尤其是 `giveall`（你说的 give 什么）。
+Languages: [English](COMMAND_GUIDE_en.md) | 中文
+
+> 这份文档专门讲「怎么用命令」，尤其是 `giveall`。
 
 ## 1. 先把服务跑起来
 
-在仓库根目录执行：
-
-```bash
-dotnet build
-dotnet run --project ./MikuSB
-```
+请先启动服务。安装与运行命令见[使用指导](../usage/USAGE_zh.md)。
 
 启动成功后，控制台会提示可输入 `help` 获取命令帮助。
 
@@ -36,7 +33,12 @@ dotnet run --project ./MikuSB
 
 - `@<目标UID>` 可选，用于指定目标玩家。
 - 不写 `@` 时，默认对命令发送者生效。
-- 目标玩家需要在线，否则会提示未找到玩家。
+- 目标解析细节见[命令目标说明](COMMAND_TARGET_zh.md)。
+
+说明：
+
+- 选项参数写成 `p1 l90 g9 s9`（不带 `-`）。
+- `detail` / `guid` 允许使用 `-1` 表示全部。
 
 ---
 
@@ -49,14 +51,26 @@ help girl
 help debug
 ```
 
-- `help`：列出命令
-- `help giveall`：查看 giveall 用法
+---
+
+## 5. 常用命令速览
+
+- `help [command]`（别名：`h`）
+- `game <args...>`
+- `account create <email> <uid>`
+- `account list`
+- `debug [on|off|simple|detail|file]`（别名：`dbg`）
+- `girl add <detail/-1> p<particular> l<level> s<star>`（别名：`g`）
+- `girl level <guid/-1> <level>`
+- `girl neuronic <guid/-1> <level>`
+- `girl break <guid/-1> <level>`
+- `giveall <类型> <detail/-1> [选项]`（别名：`ga`）
 
 ---
 
-## 5. giveall 怎么用（重点）
+## 6. giveall 怎么用（重点）
 
-`giveall` 主命令别名是 `ga`。  
+`giveall` 主命令别名是 `ga`。
 可用子命令：
 
 - `weapon`
@@ -67,8 +81,9 @@ help debug
 - `weaponpart`
 - `call`
 - `skin`
+- `furniture`
 
-### 5.1 参数规则（很关键）
+### 6.1 参数规则（很关键）
 
 在当前实现里，选项参数建议写成：
 
@@ -78,7 +93,7 @@ help debug
 
 即 **不要写成 `-p1` / `-l90` / `-g9`**，否则会被当成其他参数处理。
 
-### 5.2 常见示例
+### 6.2 常见示例
 
 ```text
 # 给自己所有武器，particular=1，等级90
@@ -93,7 +108,7 @@ giveall card -1 p1 l80
 # 给自己所有武器皮肤
 giveall weaponskin -1 p1
 
-# 给自己所有角色皮肤（genre=9 仅示例，按你资源配置调整）
+# 给自己所有角色皮肤（genre=9 仅示例）
 giveall skin -1 g9 p1 l1
 ```
 
@@ -104,9 +119,7 @@ giveall skin -1 g9 p1 l1
 
 ---
 
-## 6. 其他常用命令
-
-### 6.1 girl（角色）
+## 7. girl 命令
 
 ```text
 girl add -1 p1 l1 s9
@@ -115,7 +128,9 @@ girl neuronic -1 6
 girl break -1 45
 ```
 
-### 6.2 debug（调试输出）
+---
+
+## 8. debug 开关
 
 ```text
 debug on
@@ -127,7 +142,7 @@ debug file
 
 ---
 
-## 7. 常见问题
+## 9. 常见问题
 
 ### Q1：提示“未找到命令”
 
@@ -137,11 +152,9 @@ debug file
 
 ### Q2：提示“未找到玩家”
 
-- 目标 UID 不在线
-- 先确认玩家已登录，再使用 `@uid`
+见[命令目标说明](COMMAND_TARGET_zh.md)。
 
 ### Q3：命令执行了但结果不对
 
 - 优先用 `help <命令>` 对照参数格式
 - `giveall` 选项参数按 `p1 l90 g9` 这种写法输入
-
