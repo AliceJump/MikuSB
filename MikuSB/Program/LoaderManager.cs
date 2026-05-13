@@ -116,8 +116,8 @@ public class LoaderManager : MikuSB
         if (AccountData.GetFirstAccount() != null)
             return;
 
-        var account = AccountData.CreateAccount(InitialAccountUsername, InitialAccountUid, "");
-        Logger.Info($"Initialized startup account: {account.Username} (UID {account.Uid})");
+        _ = AccountData.CreateAccount(InitialAccountUsername, InitialAccountUid, "");
+        Logger.Info("Initialized startup account for fresh database.");
     }
 
     public static async Task InitSdkServer()
