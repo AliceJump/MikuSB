@@ -50,6 +50,14 @@ public class PlayerInstance(PlayerGameData data)
         var t = Task.Run(async () =>
         {
             await InitialPlayerManager();
+            foreach (var weapon in GameData.WeaponData.Values)
+            {
+                if (weapon.Level <= 0)
+                    continue;
+
+                await InventoryManager.AddWeaponItem((ItemTypeEnum)weapon.Genre, weapon.Detail, weapon.Particular,
+                    weapon.Level, 90, false);
+            }
             foreach (var skinCard in GameData.CardSkinData.Values)
             {
                 await InventoryManager.AddSkinItem((ItemTypeEnum)skinCard.Genre, skinCard.Detail, skinCard.Particular, skinCard.Level, false);
