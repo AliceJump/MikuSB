@@ -136,6 +136,60 @@ public class RouteController : ControllerBase
         return null;
     }
 
+    private static AccountData? ResolveAccountForSdkLogin(string? email, string? uid, string? token)
+    {
+        if (!string.IsNullOrWhiteSpace(token))
+        {
+            var accountByComboToken = AccountData.GetAccountByComboToken(token);
+            if (accountByComboToken != null)
+                return accountByComboToken;
+
+            var accountByDispatchToken = AccountData.GetAccountByDispatchToken(token);
+            if (accountByDispatchToken != null)
+                return accountByDispatchToken;
+        }
+
+        if (!string.IsNullOrWhiteSpace(email))
+        {
+            var accountByEmail = AccountData.GetAccountByEmail(email);
+            if (accountByEmail != null)
+                return accountByEmail;
+        }
+
+        return ResolveAccountByUid(uid);
+    }
+
+    private async Task<string?> GetJsonBodyValue(string propertyName)
+    {
+        if (!Request.HasJsonContentType())
+            return null;
+
+        Request.EnableBuffering();
+        Request.Body.Position = 0;
+
+        using var reader = new StreamReader(Request.Body, Encoding.UTF8, leaveOpen: true);
+        var body = await reader.ReadToEndAsync();
+        Request.Body.Position = 0;
+
+        if (string.IsNullOrWhiteSpace(body))
+            return null;
+
+        try
+        {
+            using var document = JsonDocument.Parse(body);
+            if (document.RootElement.ValueKind != JsonValueKind.Object)
+                return null;
+
+            return document.RootElement.TryGetProperty(propertyName, out var value)
+                ? value.GetString()
+                : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     private static AccountData? ResolveAutoLoginAccount()
         => AccountData.GetFirstAccount();
 
@@ -165,9 +219,16 @@ public class RouteController : ControllerBase
 
     [HttpGet("/seasun/loginByToken")]
     [HttpPost("/seasun/loginByToken")]
-    public IActionResult LoginByToken()
+    public async Task<IActionResult> LoginByToken(
+        [FromQuery] string? uid,
+        [FromQuery] string? token,
+        [FromForm] string? form_uid,
+        [FromForm] string? form_token)
     {
-        var account = ResolveAutoLoginAccount();
+        var bodyUid = await GetJsonBodyValue("uid");
+        var bodyToken = await GetJsonBodyValue("token");
+        var account = ResolveAccountForSdkLogin(null, uid ?? form_uid ?? bodyUid, token ?? form_token ?? bodyToken)
+                      ?? ResolveAutoLoginAccount();
         if (account == null)
             return BuildLoginFailedResponse("Account not found.");
 
@@ -200,9 +261,22 @@ public class RouteController : ControllerBase
 
     [HttpGet("/seasun/login")]
     [HttpPost("/seasun/login")]
-    public IActionResult Login()
+    public async Task<IActionResult> Login(
+        [FromQuery] string? uid,
+        [FromQuery] string? token,
+        [FromQuery] string? email,
+        [FromForm] string? form_uid,
+        [FromForm] string? form_token,
+        [FromForm] string? form_email)
     {
-        var account = ResolveAutoLoginAccount();
+        var bodyEmail = await GetJsonBodyValue("email");
+        var bodyUid = await GetJsonBodyValue("uid");
+        var bodyToken = await GetJsonBodyValue("token");
+        var account = ResolveAccountForSdkLogin(
+                          email ?? form_email ?? bodyEmail,
+                          uid ?? form_uid ?? bodyUid,
+                          token ?? form_token ?? bodyToken)
+                      ?? ResolveAutoLoginAccount();
         if (account == null)
             return BuildLoginFailedResponse("Account not found.");
 
