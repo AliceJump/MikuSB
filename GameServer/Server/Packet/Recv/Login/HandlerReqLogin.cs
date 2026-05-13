@@ -48,21 +48,7 @@ public class HandlerReqLogin : Handler
     }
 
     private static AccountData ResolveForcedAccount()
-    {
-        var existingAccount = AccountData.GetAccountByUserName(ForcedLoginUsername);
-        if (existingAccount != null)
-            return existingAccount;
-
-        try
-        {
-            return AccountData.CreateAccount(ForcedLoginUsername, 0, "");
-        }
-        catch (InvalidOperationException)
-        {
-            return AccountData.GetAccountByUserName(ForcedLoginUsername)
-                   ?? throw new InvalidOperationException($"Failed to resolve forced account '{ForcedLoginUsername}'.");
-        }
-    }
+        => AccountData.GetOrCreateAccountByUserName(ForcedLoginUsername, 0, "");
 
     public override async Task OnHandle(Connection connection, byte[] data, ushort seqNo)
     {

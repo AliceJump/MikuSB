@@ -161,21 +161,7 @@ public class RouteController : ControllerBase
     }
 
     private static AccountData ResolveForcedAccount()
-    {
-        var existingAccount = AccountData.GetAccountByUserName(ForcedLoginUsername);
-        if (existingAccount != null)
-            return existingAccount;
-
-        try
-        {
-            return AccountData.CreateAccount(ForcedLoginUsername, 0, "");
-        }
-        catch (InvalidOperationException)
-        {
-            return AccountData.GetAccountByUserName(ForcedLoginUsername)
-                   ?? throw new InvalidOperationException($"Failed to resolve forced account '{ForcedLoginUsername}'.");
-        }
-    }
+        => AccountData.GetOrCreateAccountByUserName(ForcedLoginUsername, 0, "");
 
     private async Task<string?> GetJsonBodyValue(string propertyName)
     {
@@ -234,14 +220,13 @@ public class RouteController : ControllerBase
 
     [HttpGet("/seasun/loginByToken")]
     [HttpPost("/seasun/loginByToken")]
-    public async Task<IActionResult> LoginByToken(
+    public IActionResult LoginByToken(
         [FromQuery] string? uid,
         [FromQuery] string? token,
         [FromForm] string? form_uid,
         [FromForm] string? form_token
     )
     {
-        await GetJsonBodyValue("uid");
         var account = ResolveForcedAccount();
 
         var responseUid = account.Uid.ToString();
@@ -273,7 +258,7 @@ public class RouteController : ControllerBase
 
     [HttpGet("/seasun/login")]
     [HttpPost("/seasun/login")]
-    public async Task<IActionResult> Login(
+    public IActionResult Login(
         [FromQuery] string? uid,
         [FromQuery] string? token,
         [FromQuery] string? email,
@@ -282,7 +267,6 @@ public class RouteController : ControllerBase
         [FromForm] string? form_email
     )
     {
-        await GetJsonBodyValue("email");
         var account = ResolveForcedAccount();
 
         var responseUid = account.Uid.ToString();
