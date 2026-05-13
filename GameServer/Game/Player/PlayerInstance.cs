@@ -20,7 +20,6 @@ namespace MikuSB.GameServer.Game.Player;
 public class PlayerInstance(PlayerGameData data)
 {
     private const uint BootstrapLevel = 80;
-    private const uint BootstrapCharacterBreak = 9;
 
     #region Property
     public Connection? Connection { get; set; }
@@ -214,7 +213,6 @@ public class PlayerInstance(PlayerGameData data)
                 continue;
 
             character.Level = BootstrapLevel;
-            character.Break = BootstrapCharacterBreak;
         }
         foreach (var supplies in GameData.AllSuppliesData)
         {
