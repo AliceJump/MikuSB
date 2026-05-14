@@ -1,0 +1,75 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Optional tag name to create a release (useful for manual runs)'
+        required: false
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 'latest'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Publish
+        run: dotnet publish MikuSB/MikuSB.csproj -c Release -o ./artifacts/publish --no-build
+
+      - name: Determine release tag
+        id: tag
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "RELEASE_TAG=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+          else
+            if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+              echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+            else
+              echo "RELEASE_TAG=manual-${GITHUB_RUN_ID}" >> $GITHUB_ENV
+            fi
+          fi
+        shell: bash
+
+      - name: Archive publish output
+        run: |
+          mkdir -p artifacts
+          cd artifacts
+          zip -r release-${RELEASE_TAG}.zip publish
+        shell: bash
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          release_name: Release ${{ env.RELEASE_TAG }}
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: artifacts/release-${{ env.RELEASE_TAG }}.zip
+          asset_name: MikuSB-${{ env.RELEASE_TAG }}.zip
+          asset_content_type: application/zip
