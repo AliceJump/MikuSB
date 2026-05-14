@@ -30,7 +30,7 @@ jobs:
         run: dotnet build -c Release --no-restore
 
       - name: Publish
-        run: dotnet publish MikuSB/MikuSB.csproj -c Release -o ./artifacts/publish --no-build
+        run: dotnet publish MikuSB/MikuSB.csproj -c Release -o ./artifacts/publish --no-build -r linux-x64
 
       - name: Determine release tag
         id: tag
