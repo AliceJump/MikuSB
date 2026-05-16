@@ -41,7 +41,7 @@
 dotnet build
 ```
 2. Set `GamePath` in `Config.json` to the path of your game executable.
-3. Start the server and run the `game` command.
+3. Start the server and run the `game` command, or launch the game directly with `MikuSB.exe -game [-path game_path] [-arg param1] [-arg param2]`.
 4. Create an account in the server console.  
 5. Enjoy.
 
