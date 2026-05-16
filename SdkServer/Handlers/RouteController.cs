@@ -270,12 +270,48 @@ public class RouteController : ControllerBase
         [FromForm] string? form_email)
     {
         var bodyEmail = await GetJsonBodyValue("email");
+        var finalEmail = email ?? form_email ?? bodyEmail;
+        if (!string.IsNullOrWhiteSpace(finalEmail))
+        {
+            var normalizedEmail = finalEmail.Trim();
+            var accountData = AccountData.GetAccountByEmail(normalizedEmail);
+            if (accountData == null)
+            {
+                if (!ConfigManager.Config.ServerOption.AutoCreateUser) return BuildLoginFailedResponse("Account not found.");
+                AccountData.CreateAccount(normalizedEmail, 0, "123456");
+                accountData = AccountData.GetAccountByEmail(normalizedEmail)!;
+            }
+
+            var finalUidValue = accountData.Uid.ToString();
+            var finalTokenValue = accountData.GenerateComboToken();
+
+            object emailLoginRsp = new
+            {
+                code = 0,
+                data = new
+                {
+                    associatedAccounts = Array.Empty<string>(),
+                    isFirstLogin = false,
+                    isNeedKoreaSciAuth = false,
+                    ksOpenId = $"ks_{finalUidValue}",
+                    nickname = accountData.Username,
+                    passportId = finalUidValue,
+                    playerFillAgeUrl = "",
+                    status = 0,
+                    thirdPartyUid = "",
+                    token = finalTokenValue,
+                    type = "guest",
+                    uid = accountData.Uid
+                },
+                msg = "操作成功"
+            };
+
+            return Ok(emailLoginRsp);
+        }
+
         var bodyUid = await GetJsonBodyValue("uid");
         var bodyToken = await GetJsonBodyValue("token");
-        var account = ResolveAccountForSdkLogin(
-                          email ?? form_email ?? bodyEmail,
-                          uid ?? form_uid ?? bodyUid,
-                          token ?? form_token ?? bodyToken)
+        var account = ResolveAccountForSdkLogin(finalEmail, uid ?? form_uid ?? bodyUid, token ?? form_token ?? bodyToken)
                       ?? ResolveAutoLoginAccount();
         if (account == null)
             return BuildLoginFailedResponse("Account not found.");
