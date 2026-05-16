@@ -25,6 +25,7 @@ public class MikuSB
 
     public static async Task Main(string[] args)
     {
+        Directory.SetCurrentDirectory(AppContext.BaseDirectory);
         var time = DateTime.Now;
         IConsole.InitConsole();
         LoaderManager.InitConfig();
