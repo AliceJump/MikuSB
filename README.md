@@ -48,7 +48,6 @@ Languages: English | [中文](docs/user/README_zh.md) | [日本語](docs/user/RE
 ```powershell
 dotnet build
 ```
-
 2. Set `GamePath` in `Config/Config.json` to the path of your game executable.
 3. Start the server.
 
@@ -57,8 +56,8 @@ dotnet run --project .\MikuSB
 ```
 
 4. Create an account in the server console.
-5. Run the `game` command in the server console.
-6. Start the game and log in.
+5. Run the `game` command in the server console (arguments are passed through to the game process).
+6. Start the game and log in, or launch directly with `MikuSB.exe -game [-path game_path] [-arg param1] [-arg param2]`.
 
 For publish commands and generated data details, see the [usage guide](docs/user/usage/USAGE_en.md).
 
