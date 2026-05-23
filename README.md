@@ -14,6 +14,12 @@ Languages: English | [中文](docs/user/README_zh.md) | [日本語](docs/user/RE
 - [Command guide](docs/user/commands/COMMAND_GUIDE_en.md)
 - [Command target notes](docs/user/commands/COMMAND_TARGET_en.md)
 
+## Scam Warning
+
+MikuSB is completely free and open source.
+If anyone sold you this server or charged money to provide it, that was a scam.
+Request a refund immediately and report the seller to us on Discord with any relevant proof or purchase details.
+
 ## Overview
 
 - `SdkServer`

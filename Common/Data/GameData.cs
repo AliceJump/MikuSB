@@ -13,6 +13,7 @@ public static class GameData
     public static Dictionary<int, BreakLevelLimitExcel> BreakLevelLimitData { get; private set; } = [];
     public static Dictionary<int, RecycleExcel> RecycleData { get; private set; } = [];
     public static Dictionary<uint, ChapterLevelExcel> ChapterLevelData { get; private set; } = [];
+    public static Dictionary<uint, RoleLevelExcel> RoleLevelData { get; private set; } = [];
     public static Dictionary<uint, ArItemExcel> ArItemData { get; private set; } = [];
     public static Dictionary<uint, ManifestationExcel> ManifestationData { get; private set; } = [];
     public static Dictionary<uint, Rogue3DDifficultExcel> Rogue3DDifficultData { get; private set; } = [];
@@ -20,6 +21,7 @@ public static class GameData
     public static Dictionary<uint, Rogue3DTalentExcel> Rogue3DTalentData { get; private set; } = [];
     public static Dictionary<uint, Rogue3DDailyBuffExcel> Rogue3DDailyBuffData { get; private set; } = [];
     public static Dictionary<int, BreakExcel> BreakData { get; private set; } = [];
+    public static Dictionary<int, SpecialBreakExcel> SpecialBreakData { get; private set; } = [];
     public static Dictionary<uint, SpineExcel> SpineData { get; private set; } = [];
     public static Dictionary<uint, NodeConditionExcel> NodeConditionData { get; private set; } = [];
     public static List<SupportCardExcel> SupportCardData { get; private set; } = [];
@@ -28,6 +30,15 @@ public static class GameData
     public static Dictionary<int, SupportFixedExcel> SupportFixedData { get; private set; } = [];
     public static Dictionary<uint, WeaponSkinExcel> WeaponSkinData { get; private set; } = [];
     public static Dictionary<uint, DailyLevelExcel> DailyLevelData { get; private set; } = [];
+    public static Dictionary<uint, BossPvpBossChallengeExcel> BossPvpBossChallengeData { get; private set; } = [];
+    public static Dictionary<uint, BossPvpBossExcel> BossPvpBossData { get; private set; } = [];
+    public static Dictionary<uint, BossPvpNumExcel> BossPvpNumData { get; private set; } = [];
+    public static Dictionary<uint, ClimbTowerTimeExcel> ClimbTowerTimeData { get; private set; } = [];
+    public static Dictionary<uint, ClimbTowerDiffExcel> ClimbTowerDiffData { get; private set; } = [];
+    public static Dictionary<uint, Dictionary<int, ClimbTowerAwardExcel>> ClimbTowerAwardData { get; private set; } = [];
+    public static Dictionary<uint, ClimbTowerLevelOrderExcel> ClimbTowerLevelOrderData { get; private set; } = [];
+    public static Dictionary<uint, TowerLevelExcel> TowerLevelData { get; private set; } = [];
+    public static Dictionary<uint, OtherItemExcel> OtherItemData { get; private set; } = [];
     public static Dictionary<uint, ProfileExcel> ProfileData { get; private set; } = [];
     public static Dictionary<uint, CardSkinPartsExcel> CardSkinPartsData { get; private set; } = [];
     public static Dictionary<uint, CallItemExcel> CallItemData { get; private set; } = [];
@@ -35,6 +46,9 @@ public static class GameData
     public static Dictionary<uint, GuideExcel> GuideData { get; private set; } = [];
     public static Dictionary<uint, DormGiftExcel> DormGiftData { get; private set; } = [];
     public static Dictionary<uint, HouseFurniturePosExcel> HouseFurniturePosData { get; private set; } = [];
+    public static Dictionary<uint, GachaExcel> GachaData { get; private set; } = [];
+    public static Dictionary<uint, GachaProbabilityExcel> GachaProbabilityData { get; private set; } = [];
+    public static Dictionary<string, List<GachaPoolItem>> GachaPoolData { get; private set; } = [];
 }
 
 public static class GameResourceTemplateId
