@@ -71,7 +71,6 @@ public class Chapter_DealLevelSettlement : ICallGSHandler
             extraSync = sync;
             return response;
         }
-
         return tbParam?.DeepClone() ?? new JsonObject();
     }
 
