@@ -124,7 +124,6 @@ public class MikuSB
 
         return extraArgs.ToArray();
     }
-
     #region Exit
 
     private static void RegisterExitEvent()

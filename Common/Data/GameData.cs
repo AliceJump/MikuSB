@@ -38,6 +38,7 @@ public static class GameData
     public static Dictionary<uint, Dictionary<int, ClimbTowerAwardExcel>> ClimbTowerAwardData { get; private set; } = [];
     public static Dictionary<uint, ClimbTowerLevelOrderExcel> ClimbTowerLevelOrderData { get; private set; } = [];
     public static Dictionary<uint, TowerLevelExcel> TowerLevelData { get; private set; } = [];
+    public static Dictionary<uint, TowerEventLevelExcel> TowerEventLevelData { get; private set; } = [];
     public static Dictionary<uint, OtherItemExcel> OtherItemData { get; private set; } = [];
     public static Dictionary<uint, ProfileExcel> ProfileData { get; private set; } = [];
     public static Dictionary<uint, CardSkinPartsExcel> CardSkinPartsData { get; private set; } = [];
@@ -49,6 +50,9 @@ public static class GameData
     public static Dictionary<uint, GachaExcel> GachaData { get; private set; } = [];
     public static Dictionary<uint, GachaProbabilityExcel> GachaProbabilityData { get; private set; } = [];
     public static Dictionary<string, List<GachaPoolItem>> GachaPoolData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureTimeExcel> VirCaptureTimeData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureSeasonExcel> VirCaptureSeasonData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureTrialTimeExcel> VirCaptureTrialTimeData { get; private set; } = [];
 }
 
 public static class GameResourceTemplateId
