@@ -53,6 +53,15 @@ public static class GameData
     public static Dictionary<uint, VirCaptureTimeExcel> VirCaptureTimeData { get; private set; } = [];
     public static Dictionary<uint, VirCaptureSeasonExcel> VirCaptureSeasonData { get; private set; } = [];
     public static Dictionary<uint, VirCaptureTrialTimeExcel> VirCaptureTrialTimeData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureCaptureRegionExcel> VirCaptureCaptureRegionData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureLevelListExcel> VirCaptureLevelListData { get; private set; } = [];
+    public static Dictionary<ulong, MonsterCardExcel> MonsterCardData { get; private set; } = [];
+    public static Dictionary<uint, FishingFoodExcel> FishingFoodData { get; private set; } = [];
+    public static Dictionary<uint, VirCaptureTowerExcel> VirCaptureTowerData { get; private set; } = [];
+    public static Dictionary<uint, DreamCardActivityExcel> DreamCardActivityData { get; private set; } = [];
+    public static Dictionary<uint, DlcActivityExcel> DlcActivityData { get; private set; } = [];
+    public static Dictionary<uint, BattlePassTimeExcel> BattlePassTimeData { get; private set; } = [];
+    public static Dictionary<uint, IbGoodsExcel> IbGoodsData { get; private set; } = [];
 }
 
 public static class GameResourceTemplateId

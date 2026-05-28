@@ -6,48 +6,47 @@ using MikuSB.Proto;
 using System.Globalization;
 using System.Text.Json.Nodes;
 
-namespace MikuSB.GameServer.Server.CallGS.Handlers.BattlePass;
+namespace MikuSB.GameServer.Server.CallGS.Handlers.DLC;
 
-[CallGSApi("BattlePassLogic_ClientRefresh")]
-public class BattlePassLogic_ClientRefresh : ICallGSHandler
+[CallGSApi("DLCLogic_CheckOpenAct")]
+public class DLCLogic_CheckOpenAct : ICallGSHandler
 {
-    private const uint GroupId = 25;
-    private const uint CurIdSid = 1;
+    private const uint GroupId = 15;
+    private const uint ActIdSid = 1;
 
     public async Task Handle(Connection connection, string param, ushort seqNo)
     {
         var now = DateTime.Now;
-        var battlePass = ResolveCurrent(GameData.BattlePassTimeData.Values, now);
-        var player = connection.Player!;
-        var sync = new NtfSyncPlayer();
-
-        if (battlePass == null)
+        var act = ResolveCurrent(GameData.DlcActivityData.Values, now);
+        if (act == null)
         {
-            SetAttr(player, CurIdSid, 0, sync);
-            await CallGSRouter.SendScript(connection, "BattlePassLogic_ClientRefresh", "{}", sync);
+            await CallGSRouter.SendScript(connection, "DLCLogic_CheckOpenAct", "{\"bOpen\":false}");
             return;
         }
 
-        SetAttr(player, CurIdSid, battlePass.Id, sync);
+        var player = connection.Player!;
+        var sync = new NtfSyncPlayer();
+        SetAttr(player, ActIdSid, act.Id, sync);
 
         var response = new JsonObject
         {
-            ["nId"] = battlePass.Id,
-            ["nStartTime"] = ToUnixSeconds(ParseConfigTime(battlePass.StartTime)),
-            ["nEndTime"] = ToUnixSeconds(ParseConfigTime(battlePass.EndTime))
+            ["bOpen"] = true,
+            ["nId"] = act.Id,
+            ["nStartTime"] = ToUnixSeconds(ParseConfigTime(act.EnterStartTime)),
+            ["nEndTime"] = ToUnixSeconds(ParseConfigTime(act.CloseEndTime))
         };
 
-        await CallGSRouter.SendScript(connection, "BattlePassLogic_ClientRefresh", response.ToJsonString(), sync);
+        await CallGSRouter.SendScript(connection, "DLCLogic_CheckOpenAct", response.ToJsonString(), sync);
     }
 
-    private static BattlePassTimeExcel? ResolveCurrent(IEnumerable<BattlePassTimeExcel> configs, DateTime now)
+    private static DlcActivityExcel? ResolveCurrent(IEnumerable<DlcActivityExcel> configs, DateTime now)
     {
         var parsed = configs
             .Select(x => new
             {
                 Config = x,
-                Start = ParseConfigTime(x.StartTime),
-                End = ParseConfigTime(x.EndTime)
+                Start = ParseConfigTime(x.EnterStartTime),
+                End = ParseConfigTime(x.CloseEndTime)
             })
             .Where(x => x.Start.HasValue && x.End.HasValue)
             .OrderBy(x => x.Start)

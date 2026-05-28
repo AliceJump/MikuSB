@@ -3,7 +3,9 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using MikuSB.GameServer.Game.BossPvp;
 using MikuSB.Proto;
+using MikuSB.GameServer.Server.CallGS.Handlers.DreamCard;
 using MikuSB.GameServer.Server.CallGS.Handlers.Tower;
+using MikuSB.GameServer.Server.CallGS.Handlers.VirCapture;
 
 namespace MikuSB.GameServer.Server.CallGS.Handlers.Chapter;
 
@@ -25,6 +27,8 @@ public class Chapter_DealLevelSettlement : ICallGSHandler
 
     private static JsonNode BuildSettlementPayload(Connection connection, string? sCmd, JsonNode? tbParam, out NtfSyncPlayer? extraSync)
     {
+        extraSync = null;
+
         extraSync = null;
 
         if (string.Equals(sCmd, "Chapter_LevelSettlement", StringComparison.Ordinal))
@@ -71,6 +75,21 @@ public class Chapter_DealLevelSettlement : ICallGSHandler
             extraSync = sync;
             return response;
         }
+
+        if (string.Equals(sCmd, "VirCaptureTower_LevelSettlement", StringComparison.Ordinal))
+        {
+            var (response, sync) = VirCaptureTower_LevelSettlement.HandleSettlement(connection.Player!, tbParam);
+            extraSync = sync;
+            return response;
+        }
+
+        if (string.Equals(sCmd, "DreamCard_LevelSettlement", StringComparison.Ordinal))
+        {
+            var (response, sync) = DreamCard_LevelSettlement.HandleSettlement(connection.Player!, tbParam);
+            extraSync = sync;
+            return response;
+        }
+
         return tbParam?.DeepClone() ?? new JsonObject();
     }
 

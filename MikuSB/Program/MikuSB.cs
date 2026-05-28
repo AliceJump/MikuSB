@@ -29,7 +29,6 @@ public class MikuSB
         var time = DateTime.Now;
         IConsole.InitConsole();
         LoaderManager.InitConfig();
-        ShowAntiScamWarning();
         if (await UpdateService.TryStartSelfUpdateAsync())
             return;
 
@@ -80,6 +79,7 @@ public class MikuSB
         Logger.Warn("============================================================");
     }
 
+    #region Exit
     private static void TryRunStartupGame(string[] args)
     {
         if (!args.Any(x => string.Equals(x, "-game", StringComparison.OrdinalIgnoreCase)))
@@ -96,36 +96,35 @@ public class MikuSB
             Logger.Error(I18NManager.Translate("Game.Command.Game.Failed", ex.Message), ex);
         }
     }
-
     private static string[] ParseGameCommandArgs(string[] args)
     {
-        var extraArgs = new List<string>();
-        var hasPathOverride = false;
+        var result = new List<string>();
 
-        for (int i = 0; i < args.Length; i++)
+        for (var i = 0; i < args.Length; i++)
         {
-            if (string.Equals(args[i], "-path", StringComparison.OrdinalIgnoreCase))
+            var arg = args[i];
+
+            // skip launcher flag itself
+            if (string.Equals(arg, "-game", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            // everything after -- will be forwarded directly
+            if (string.Equals(arg, "--", StringComparison.Ordinal))
             {
-                if (i + 1 < args.Length)
-                {
-                    ConfigManager.Config.Loader.GamePath = args[++i];
-                    hasPathOverride = true;
-                }
+                for (var j = i + 1; j < args.Length; j++)
+                    result.Add(args[j]);
+
+                break;
             }
-            else if (string.Equals(args[i], "-arg", StringComparison.OrdinalIgnoreCase))
-            {
-                if (i + 1 < args.Length)
-                    extraArgs.Add(args[++i]);
-            }
+
+            // optional:
+            // support quoted args that shell already split incorrectly
+            if (!string.IsNullOrWhiteSpace(arg))
+                result.Add(arg);
         }
 
-        if (hasPathOverride)
-            Logger.Info("Startup -path override applied for this run.");
-
-        return extraArgs.ToArray();
+        return result.ToArray();
     }
-    #region Exit
-
     private static void RegisterExitEvent()
     {
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
@@ -169,3 +168,4 @@ public class MikuSB
 
     # endregion
 }
+
