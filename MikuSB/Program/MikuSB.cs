@@ -80,7 +80,51 @@ public class MikuSB
     }
 
     #region Exit
+    private static void TryRunStartupGame(string[] args)
+    {
+        if (!args.Any(x => string.Equals(x, "-game", StringComparison.OrdinalIgnoreCase)))
+            return;
 
+        try
+        {
+            var extraGameArgs = ParseGameCommandArgs(args);
+            var pid = GameLaunchService.Launch(extraGameArgs);
+            Logger.Info(I18NManager.Translate("Game.Command.Game.Started", pid.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(I18NManager.Translate("Game.Command.Game.Failed", ex.Message), ex);
+        }
+    }
+    private static string[] ParseGameCommandArgs(string[] args)
+    {
+        var result = new List<string>();
+
+        for (var i = 0; i < args.Length; i++)
+        {
+            var arg = args[i];
+
+            // skip launcher flag itself
+            if (string.Equals(arg, "-game", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            // everything after -- will be forwarded directly
+            if (string.Equals(arg, "--", StringComparison.Ordinal))
+            {
+                for (var j = i + 1; j < args.Length; j++)
+                    result.Add(args[j]);
+
+                break;
+            }
+
+            // optional:
+            // support quoted args that shell already split incorrectly
+            if (!string.IsNullOrWhiteSpace(arg))
+                result.Add(arg);
+        }
+
+        return result.ToArray();
+    }
     private static void RegisterExitEvent()
     {
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
