@@ -1,5 +1,6 @@
 ﻿using MikuSB.Data;
 using MikuSB.Database;
+using MikuSB.Loader;
 using MikuSB.MikuSB.Tool;
 using MikuSB.GameServer.Command;
 using MikuSB.GameServer.Server;
@@ -22,14 +23,16 @@ public class MikuSB
     private static readonly CancellationTokenSource _cts = new();
     private static int _exitCode = 0;
 
-    public static async Task Main()
+    public static async Task Main(string[] args)
     {
+        Directory.SetCurrentDirectory(AppContext.BaseDirectory);
         var time = DateTime.Now;
         IConsole.InitConsole();
         LoaderManager.InitConfig();
-        ShowAntiScamWarning();
         if (await UpdateService.TryStartSelfUpdateAsync())
             return;
+
+        TryRunStartupGame(args);
 
         RegisterExitEvent();
         await LoaderManager.InitSdkServer();
@@ -121,3 +124,4 @@ public class MikuSB
 
     # endregion
 }
+
