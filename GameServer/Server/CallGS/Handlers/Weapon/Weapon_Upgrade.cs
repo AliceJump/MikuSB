@@ -258,9 +258,9 @@ internal sealed class WeaponUpgradeConfig
         var weaponTemplates = GameData.WeaponData.Values.ToDictionary(
             x => GameResourceTemplateId.FromGdpl(x.Genre, x.Detail, x.Particular, x.Level),
             x => new MaterialTemplate(x.Color, x.ProvideExp, x.ConsumeGold, x.RecycleID, x.BreakLimitID));
-        var suppliesTemplates = GameData.SuppliesData.Values.ToDictionary(
-            x => GameResourceTemplateId.FromGdpl(x.Genre, x.Detail, x.Particular, x.Level),
-            x => new MaterialTemplate(x.Color, x.ProvideExp, x.ConsumeGold, 0, 0));
+        var suppliesTemplates = GameData.AllSuppliesData
+            .GroupBy(x => GameResourceTemplateId.FromGdpl(x.Genre, x.Detail, x.Particular, x.Level))
+            .ToDictionary(g => g.Key, g => new MaterialTemplate(g.First().Color, g.First().ProvideExp, g.First().ConsumeGold, 0, 0));
 
         return new WeaponUpgradeConfig(normalExp, ssrExp, breakLimits, recycleById, weaponTemplates, suppliesTemplates);
     }
@@ -270,6 +270,24 @@ internal sealed class WeaponUpgradeConfig
 
     public bool TryGetSuppliesTemplate(ulong templateId, out MaterialTemplate template) =>
         _suppliesTemplates.TryGetValue(templateId, out template!);
+
+    public bool TryGetMaterialGain(BaseGameItemInfo item, out ulong exp)
+    {
+        exp = 0;
+        if (TryGetWeaponTemplate(item.TemplateId, out var weaponTemplate))
+        {
+            exp = weaponTemplate.ProvideExp;
+            if (item is GameWeaponInfo weapon && weapon.Level > 1)
+                exp += GetWeaponRecycleExp(weaponTemplate, weapon.Level);
+            return true;
+        }
+        if (TryGetSuppliesTemplate(item.TemplateId, out var suppliesTemplate))
+        {
+            exp = suppliesTemplate.ProvideExp;
+            return true;
+        }
+        return false;
+    }
 
     public ulong GetWeaponRecycleExp(MaterialTemplate template, uint level)
     {

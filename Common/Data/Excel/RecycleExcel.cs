@@ -6,6 +6,7 @@ namespace MikuSB.Data.Excel;
 public class RecycleExcel : ExcelResource
 {
     public int ID { get; set; }
+    public JToken? RecycleReward { get; set; }
     public JToken? RecycleBase { get; set; }
     public JToken? RecycleRatio { get; set; }
 
