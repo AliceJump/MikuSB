@@ -1,5 +1,6 @@
 ﻿using MikuSB.Data;
 using MikuSB.Database;
+using MikuSB.Loader;
 using MikuSB.MikuSB.Tool;
 using MikuSB.GameServer.Command;
 using MikuSB.GameServer.Server;
@@ -22,14 +23,16 @@ public class MikuSB
     private static readonly CancellationTokenSource _cts = new();
     private static int _exitCode = 0;
 
-    public static async Task Main()
+    public static async Task Main(string[] args)
     {
+        Directory.SetCurrentDirectory(AppContext.BaseDirectory);
         var time = DateTime.Now;
         IConsole.InitConsole();
         LoaderManager.InitConfig();
-        ShowAntiScamWarning();
         if (await UpdateService.TryStartSelfUpdateAsync())
             return;
+
+        TryRunStartupGame(args);
 
         RegisterExitEvent();
         await LoaderManager.InitSdkServer();
@@ -77,7 +80,51 @@ public class MikuSB
     }
 
     #region Exit
+    private static void TryRunStartupGame(string[] args)
+    {
+        if (!args.Any(x => string.Equals(x, "-game", StringComparison.OrdinalIgnoreCase)))
+            return;
 
+        try
+        {
+            var extraGameArgs = ParseGameCommandArgs(args);
+            var pid = GameLaunchService.Launch(extraGameArgs);
+            Logger.Info(I18NManager.Translate("Game.Command.Game.Started", pid.ToString(CultureInfo.InvariantCulture)));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(I18NManager.Translate("Game.Command.Game.Failed", ex.Message), ex);
+        }
+    }
+    private static string[] ParseGameCommandArgs(string[] args)
+    {
+        var result = new List<string>();
+
+        for (var i = 0; i < args.Length; i++)
+        {
+            var arg = args[i];
+
+            // skip launcher flag itself
+            if (string.Equals(arg, "-game", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            // everything after -- will be forwarded directly
+            if (string.Equals(arg, "--", StringComparison.Ordinal))
+            {
+                for (var j = i + 1; j < args.Length; j++)
+                    result.Add(args[j]);
+
+                break;
+            }
+
+            // optional:
+            // support quoted args that shell already split incorrectly
+            if (!string.IsNullOrWhiteSpace(arg))
+                result.Add(arg);
+        }
+
+        return result.ToArray();
+    }
     private static void RegisterExitEvent()
     {
         AppDomain.CurrentDomain.ProcessExit += (_, _) =>
@@ -121,3 +168,4 @@ public class MikuSB
 
     # endregion
 }
+

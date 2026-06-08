@@ -29,6 +29,8 @@ public class Chapter_DealLevelSettlement : ICallGSHandler
     {
         extraSync = null;
 
+        extraSync = null;
+
         if (string.Equals(sCmd, "Chapter_LevelSettlement", StringComparison.Ordinal))
         {
             return new JsonArray();

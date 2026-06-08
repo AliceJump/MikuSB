@@ -40,7 +40,6 @@ public class SupportCardExcel : ExcelResource
 
     [JsonIgnore]
     public IReadOnlyList<uint> FixedAffixCost => ParseFlatCost(FixedAffixCostRaw);
-
     public ulong TemplateId => GameResourceTemplateId.FromGdpl(Genre, Detail, Particular, Level);
 
     public override uint GetId() => Icon;
