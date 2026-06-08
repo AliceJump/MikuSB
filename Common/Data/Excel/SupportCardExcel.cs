@@ -13,6 +13,7 @@ public class SupportCardExcel : ExcelResource
     public uint Icon { get; set; }
     public uint ProvideExp { get; set; }
     public uint Color { get; set; }
+    [JsonProperty("RecycleID")] public int RecycleID { get; set; }
     [JsonProperty("LevelLimitID")] public int LevelLimitId { get; set; }
     [JsonProperty("AffixPool")] public List<int> AffixPool { get; set; } = [];
     [JsonProperty("AffixCost")] public JToken? AffixCostRaw { get; set; }

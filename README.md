@@ -116,6 +116,9 @@ For publish commands and generated data details, see the [usage guide](docs/user
 - [Naruse](https://github.com/DevilProMT)
 - [Kei-Luna](https://github.com/Kei-Luna)
 
+## License
+This repository is licensed under the [MIT License](LICENSE).
+
 ## Notes on use
 
 This software is intended for research and testing purposes in a local environment.
